@@ -11,7 +11,7 @@ router.get('/', async (req, res) =>{
     }catch(error){
         res.status(500).json({error: 'Server error while fetching warehouses'});
     }
-
+    
 });
 
 
