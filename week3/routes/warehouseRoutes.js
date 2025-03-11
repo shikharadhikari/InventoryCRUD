@@ -1,18 +1,18 @@
-const express = require('express');
-const Warehouse = require('../models/Warehouse.js');
-const Product = require('../models/Product.js');
+const express = require("express");
+const {
+  getAllWarehouses,
+  updateProductQuantity,
+} = require("../controllers/warehouseController");
+const validateQuantity = require("../middleware/validateRequest");
 
 const router = express.Router();
 
-router.get('/', async (req, res) =>{
-    try{
-        const warehouses = await Warehouse.find().populate('products');
-        res.json(warehouses);
-    }catch(error){
-        res.status(500).json({error: 'Server error while fetching warehouses'});
-    }
-    
-});
+router.get("/", getAllWarehouses);
+router.put(
+  "/:warehouseId/products/:productId",
+  validateQuantity,
+  updateProductQuantity
+);
 
 
 module.exports = router;
