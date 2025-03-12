@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const warehouseRoutes = require("./routes/warehouseRoutes");
 const notificationRoute = require("./routes/notificationRoutes");
+const productRoutes = require("./routes/productRoutes");
+
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ mongoose
 
 app.use("/warehouses", warehouseRoutes.default || warehouseRoutes);
 app.use("/api/v1", notificationRoute);
+app.use("/", productRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
