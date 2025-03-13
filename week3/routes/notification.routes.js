@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   getLowStockProducts,
   getNotification,
-} = require("../controllers/NotificationController.js");
+} = require("../controllers/Notification.controller.js");
 
 router.get("/products", getLowStockProducts);
 

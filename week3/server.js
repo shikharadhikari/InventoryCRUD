@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const warehouseRoutes = require("./routes/warehouseRoutes");
-const notificationRoute = require("./routes/notificationRoutes");
+const notificationRoute = require("./routes/notification.routes");
 const productRoutes = require("./routes/productRoutes");
 
 
