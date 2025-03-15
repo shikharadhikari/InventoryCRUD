@@ -6,6 +6,7 @@ const {
 } = require("../controllers/Notification.controller.js");
 
 router.get("/products", getLowStockProducts);
+
 router.get("/notifications/reorders", getNotification);
 
 module.exports = router;
