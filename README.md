@@ -1,4 +1,4 @@
-zz<b>Warehouse Route:<br></b>
+<b>Warehouse Route:<br></b>
 PUT - /warehouses/:warehouseId/products/:productid
 
 <b>Product Routes:<br></b>
