@@ -17,24 +17,37 @@ const updateProductQuantity = async (req, res) => {
   const { quantity } = req.body;
 
   try {
-    const warehouse = await Warehouse.findById(warehouseId);
+    console.log("Searching for product:", productId);
+
+    const product = await Product.findOne({ id: productId });
+
+    if (!product) {
+      console.error("Product not found:", productId);
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    console.log("Found product:", product);
+
+    const warehouse = await Warehouse.findOne({ warehouseId });
+
     if (!warehouse) {
+      console.error("Warehouse not found:", warehouseId);
       return res.status(404).json({ error: "Warehouse not found" });
     }
 
-    if (!warehouse.products.includes(new mongoose.Types.ObjectId(productId))) {
+    console.log("Found warehouse:", warehouse);
+
+    if (!warehouse.products.includes(product._id)) {
+      console.error("Product not found in this warehouse:", productId);
       return res
         .status(404)
         .json({ error: "Product not found in this warehouse" });
     }
 
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
     product.quantity = quantity;
     await product.save();
+
+    console.log("Updated product quantity:", product);
 
     res.json({ message: "Stock updated successfully", product });
   } catch (error) {

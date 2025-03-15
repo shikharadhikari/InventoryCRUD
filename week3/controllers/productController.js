@@ -1,6 +1,7 @@
 const Product = require("../models/Product.js");
+const Warehouse = require("../models/Warehouse.js");
 
-// GET /products - Retrieve all products
+
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -10,7 +11,6 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// GET /products/:id - Retrieve a product by ID
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findOne({ id: req.params.id });
@@ -21,34 +21,9 @@ const getProductById = async (req, res) => {
   }
 };
 
-// POST /products - Create a new product
 const createProduct = async (req, res) => {
   try {
-    const { id, name, category, quantity, price, supplier, description } =
-      req.body;
-
-    // Validation
-    if (
-      !id ||
-      !name ||
-      !category ||
-      quantity === undefined ||
-      price === undefined ||
-      !supplier ||
-      !description
-    ) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    // Check if product already exists
-    const existingProduct = await Product.findOne({ id });
-    if (existingProduct) {
-      return res
-        .status(409)
-        .json({ error: "Product with this ID already exists" });
-    }
-
-    const newProduct = new Product({
+    const {
       id,
       name,
       category,
@@ -56,15 +31,65 @@ const createProduct = async (req, res) => {
       price,
       supplier,
       description,
+      warehouseId,
+    } = req.body;
+
+    console.log("Received request to create product:", req.body);
+
+    if (
+      !id ||
+      !name ||
+      !category ||
+      quantity === undefined ||
+      price === undefined ||
+      !supplier ||
+      !description ||
+      !warehouseId
+    ) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    const warehouse = await Warehouse.findOne({ warehouseId });
+    if (!warehouse) {
+      console.error("Warehouse not found:", warehouseId);
+      return res.status(404).json({ error: "Warehouse not found" });
+    }
+
+
+    const existingProduct = await Product.findOne({ id });
+    if (existingProduct) {
+      console.error("Product already exists:", id);
+      return res
+        .status(409)
+        .json({ error: "Product with this ID already exists" });
+    }
+    const newProduct = await Product.create({
+      id,
+      name,
+      category,
+      quantity,
+      price,
+      supplier,
+      description,
+      warehouseId: warehouse._id,
     });
-    await newProduct.save();
+
+    console.log("Created product:", newProduct);
+
+    warehouse.products.push(newProduct._id);
+    await warehouse.save();
+
+    console.log("Updated warehouse:", warehouse);
+
     res.status(201).json(newProduct);
   } catch (err) {
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error creating product:", err);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: err.message });
   }
 };
 
-// PUT /products/:id - Update an existing product
 const updateProduct = async (req, res) => {
   try {
     const product = await Product.findOne({ id: req.params.id });
@@ -72,7 +97,6 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    // Update the product
     Object.assign(product, req.body);
     await product.save();
     res.status(200).json(product);
@@ -81,7 +105,6 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// DELETE /products/:id - Remove a product
 const deleteProduct = async (req, res) => {
   try {
     const deletedProduct = await Product.findOneAndDelete({
