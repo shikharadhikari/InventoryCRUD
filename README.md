@@ -5,7 +5,7 @@
 <b>Warehouse Route:<br></b>
 GET - /warehouses
 PUT - /warehouses/:warehouseId/products/:productid
-
+<br>
 <b>Product Routes:<br></b>
 GET , POST - /products<br>
 PUT , DELETE - /products/:id
