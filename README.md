@@ -1,6 +1,7 @@
 <h1>Week 3 Project</h1>
 <br>
-<b>To run: <i>npm start</i></b>
+<h5>To run: <i>npm start</i></h5>
+<br>
 <br>
 <b>Warehouse Route:<br></b>
 GET - /warehouses
