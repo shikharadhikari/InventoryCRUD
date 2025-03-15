@@ -8,6 +8,7 @@ This API provides endpoints for managing warehouses, products, and notifications
 ### Update Product in Warehouse
 **PUT** `/warehouses/:warehouseId/products/:productid`
 ![image](https://github.com/user-attachments/assets/395d21c0-ffc5-44db-8c95-b2fdb66235b4)
+![image](https://github.com/user-attachments/assets/24ad9a4a-c33a-4516-a71f-7bb41cf2cc10)
 
 - **Description**: Updates a specific product in a given warehouse.
 - **Path Parameters**:
