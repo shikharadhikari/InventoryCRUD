@@ -1,4 +1,4 @@
-# Inventory Management API
+# Week 3 Inventory Management API
 
 ## Overview
 This API provides endpoints for managing warehouses, products, and notifications related to inventory management.
